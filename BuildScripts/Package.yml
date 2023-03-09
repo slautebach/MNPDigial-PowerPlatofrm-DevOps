@@ -1,0 +1,32 @@
+# Major Version, increment with every major release
+MajorVersion: 1 
+
+# Minor version, reset to 0 with every major release, increment with hot fixes
+MinorVersion: 0 
+
+# the regional Datavers domain name (ie crm3.dynamics.com)
+DataverseDomain: crm3.dyanmics.com
+
+# The solution name to export
+SolutionName: <specify you solution name here> 
+
+PortalName: <specify you portal name here>
+PortalId: <specify portal guid here>
+
+# The global shared view name to export data from (different from the releases.)
+GlobalSharedFilterView: Global-Data 
+
+# Data Migration Package Config
+CrmDataPackageConfig:
+  DisablePlugins:  # List of plugins to enable/disable as part of the migration import
+    #<entity logical name>: true/false
+    # example
+    # account: true # will enable the disable account plugins on import of data.
+
+# Build Package, what packages to enable/disable to build and release
+# For every release reset these to only the packages you need to release
+BuildPackages:
+  Solution: true
+  Portal: false
+  Data: false
+  Plugins: false

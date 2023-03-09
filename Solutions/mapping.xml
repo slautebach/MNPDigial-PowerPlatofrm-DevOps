@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mapping>
+  <!--<Folder map="WebResources" to="..\..\..\WebResources" />-->
+
+  <!-- Map all root web resource files into the web resources source control folder -->
+  <FileToPath map="WebResources\*.*" to="..\..\WebResources\" />
+  <!-- Map all "rp_*" web resource files into the web resources source control folder -->
+  <FileToPath map="WebResources\**\mnp_*.*" to="..\..\WebResources\**" />
+  <FileToPath map="WebResources\mnp_\**\*.*" to="..\..\WebResources\**" />
+  <FileToPath map="WebResources\mnp_\*.*" to="..\..\WebResources\**" />
+
+  <FileToPath map="PluginAssemblies\**\*.*" to="..\..\Plugins\**" />
+</Mapping>
