@@ -15,7 +15,7 @@ LogInvocationDetails $MyInvocation
 SetPACConnections  -targetEnvironment $targetEnvironment -appId $appId -clientSecret $clientSecret
 
 if (!$Force -and !$PackageData.Portal){
-	Write-Host "Portal Export is not enabled in package.json"
+	Write-Host "Portal Export is not enabled in package.yml"
 	exit
 }
 

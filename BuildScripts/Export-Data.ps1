@@ -6,7 +6,7 @@
     [string] $globalViewName,
     [string] $appId = "", # optional app id to connect to dataverse
 	[string] $clientSecret = "", #  client secret for the app id
-    [switch] $Force # if the package.json enables the component to build
+    [switch] $Force # if the package.yml enables the component to build
 ) 
 
 Import-Module "$PSScriptRoot\PS-Modules\Build-Package.psm1" -Force  -DisableNameChecking
@@ -23,7 +23,7 @@ SetPACConnections  -targetEnvironment $targetEnvironment -appId $appId -clientSe
 
 
 if (!$Force -and !$PackageData.Data){
-	Write-Host "Data Export is not enabled in package.json"
+	Write-Host "Data Export is not enabled in package.yml"
 	exit
 }
 

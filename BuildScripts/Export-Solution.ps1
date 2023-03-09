@@ -5,7 +5,7 @@
 	[switch]$UpdateSolutionMasterOnly, # used to extract and update solution master, then delete the extracted solution.
 	[string]$appId = "", # optional app id to connect to dataverse
 	[string]$clientSecret = "", #  client secret for the app id
-	[switch]$Force # if the package.json enables the component to build
+	[switch]$Force # if the package.yml enables the component to build
 	
 ) 
 
@@ -20,7 +20,7 @@ SetPACConnections  -targetEnvironment $targetEnvironment -appId $appId -clientSe
 
 
 if (!$Force -and !$PackageData.Solution){
-	Write-Host "Solution Export is not enabled in package.json"
+	Write-Host "Solution Export is not enabled in package.yml"
 	exit
 }
 
