@@ -14,6 +14,8 @@ LogInvocationDetails $MyInvocation
 
 SetPACConnections  -targetEnvironment $targetEnvironment -appId $appId -clientSecret $clientSecret
 
+
+
 if (!$Force -and !$PackageData.BuildPackages.Portal){
 	Write-Host "Portal Export is not enabled in package.yml"
 	exit
@@ -46,8 +48,3 @@ $files | ForEach-Object {
 		$maxPathFiles += [PSCustomObject] @{"deleted file" = $fileName}
 	}
 }
-
-Remove-Item -Path  "$PortalsPath\PortalFilesExceedMaxPath.csv" -Force -ErrorAction SilentlyContinue
-
-
-$maxPathFiles | ConvertTo-Csv -NoTypeInformation | Out-File -Encoding "UTF8" -FilePath "$PortalsPath\PortalFilesExceedMaxPath.csv"

@@ -387,6 +387,60 @@ function PublishSolutions(){
 
 }
 
+function ExportSolution([string]$solutionName, [switch] $managed){
+	$cwd = pwd
+	if ($managed){
+		$solutionExtractPath = "$($PackageData.SolutionsPath)\$($solutionName)_managed\"
+		$solutionZipFile = "$($PackageData.SolutionsPath)\$($solutionName)_managed.zip"
+	} else {
+		$solutionExtractPath = "$($PackageData.SolutionsPath)\$($solutionName)\"
+		$solutionZipFile = "$($PackageData.SolutionsPath)\$($solutionName).zip"
+	}
+
+	Write-Host "Exporting Solution: $solutionName (managed=$managed)"
+	Write-Host "Exporting Solution Zip to: $solutionZipFile"
+	Write-Host "Unpacking Solution Zip to: $solutionExtractPath"
+
+	Remove-Item $solutionExtractPath -Recurse -Force -ErrorAction SilentlyContinue
+	Remove-Item $solutionZipFile -ErrorAction SilentlyContinue
+
+	$LastExitCode = 0
+	# Extract the solution
+	Write-Host "Exporting Solution $solutionName to: $solutionExtractPath ..."
+	if ($managed) {
+		pac solution export --path $($PackageData.SolutionsPath) --name $solutionName --overwrite --managed
+		if ($LastExitCode -ne 0 ){
+			throw "Error exporting solution $solutionName to path $($PackageData.SolutionsPath)"
+		} 
+		pac solution unpack --zipfile $solutionZipFile --folder $solutionExtractPath --packagetype Managed --allowDelete --allowWrite --clobber --map $SolutionMappingFile
+		if ($LastExitCode -ne 0 ){
+			throw "Error unpacking $solutionZipFile to path $solutionExtractPath"
+		}
+	} else {
+		pac solution export --path $($PackageData.SolutionsPath) --name $solutionName --overwrite 
+		if ($LastExitCode -ne 0 ){
+			throw "Error exporting solution $solutionName to path $($PackageData.SolutionsPath)"
+		} 
+		pac solution unpack --zipfile $solutionZipFile --folder $solutionExtractPath --packagetype Unmanaged --allowDelete --allowWrite --clobber --map $SolutionMappingFile
+		if ($LastExitCode -ne 0 ){
+			throw "Error unpacking $solutionZipFile to path $solutionExtractPath"
+		}
+	}
+
+	Remove-Item $solutionZipFile -Force -ErrorAction SilentlyContinue
+
+	# Update the solution version
+	cd "$solutionExtractPath\Other"
+
+	$buildVersion = Get-Date -Format "yyyyMM"
+	$revisionVersion = Get-Date -Format "ddHHmm"
+
+	pac solution version -bv $buildVersion
+	pac solution version -rv $revisionVersion
+
+	# return to starting direcory
+	cd $cwd
+}
 
 
 Export-ModuleMember -Function * -Alias *

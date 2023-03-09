@@ -4,7 +4,7 @@
 
   <!-- Map all root web resource files into the web resources source control folder -->
   <FileToPath map="WebResources\*.*" to="..\..\WebResources\" />
-  <!-- Map all "rp_*" web resource files into the web resources source control folder -->
+  <!-- Map all "mnp_*" web resource files into the web resources source control folder, update these to your prefix -->
   <FileToPath map="WebResources\**\mnp_*.*" to="..\..\WebResources\**" />
   <FileToPath map="WebResources\mnp_\**\*.*" to="..\..\WebResources\**" />
   <FileToPath map="WebResources\mnp_\*.*" to="..\..\WebResources\**" />

@@ -12,6 +12,7 @@
 
 Import-Module "$PSScriptRoot\PS-Modules\Extract-Solution-Components.psm1" -Force  -DisableNameChecking
 Import-Module "$PSScriptRoot\PS-Modules\Build-Package.psm1" -Force -DisableNameChecking
+Import-Module "$PSScriptRoot\PS-Modules\PP-CLI.psm1" -Force -DisableNameChecking
 
 # Log Script Invcation Details
 LogInvocationDetails $MyInvocation
@@ -19,7 +20,7 @@ LogInvocationDetails $MyInvocation
 SetPACConnections  -targetEnvironment $targetEnvironment -appId $appId -clientSecret $clientSecret -logConfig
 
 
-if (!$Force -and !$PackageData.Solution){
+if (!$Force -and !$PackageData.BuildPackages.Solution){
 	Write-Host "Solution Export is not enabled in package.yml"
 	exit
 }
@@ -29,50 +30,14 @@ if ($solutionName -eq ""){
 	$solutionName = $PackageData.SolutionName
 }
 
-#Constants
-$solutionExtractPath = "$($PackageData.SolutionsPath)\$solutionName\"
-$solutionZipFile = "$($PackageData.SolutionsPath)\$solutionName.zip"
-
-Write-Host "Exporting Solution: $solutionName"
-Write-Host "Exporting Solution Zip to: $solutionZipFile"
-Write-Host "Unpacking Solution Zip to: $solutionExtractPath"
-
-Remove-Item $solutionExtractPath -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item $solutionZipFile -ErrorAction SilentlyContinue
 
 Write-Host "Publishing Solutions ..."
 pac solution publish 
 
-$LastExitCode = 0
-# Extract the solution
-Write-Host "Exporting Solution $solutionName to: $($PackageData.SolutionsPath) ..."
-pac solution export --path $($PackageData.SolutionsPath) --name $solutionName --overwrite
-if ($LastExitCode -ne 0 ){
-	throw "Error exporting solution $solutionName to path $($PackageData.SolutionsPath)"
-} 
-pac solution unpack --zipfile $solutionZipFile --folder $solutionExtractPath --packagetype Unmanaged --allowDelete --allowWrite --clobber --map $SolutionMappingFile
-if ($LastExitCode -ne 0 ){
-	throw "Error unpacking $solutionZipFile to path $solutionExtractPath"
-} 
+ExportSolution -solutionName $solutionName -managed
+ExportSolution -solutionName $solutionName 
 
-Remove-Item $solutionZipFile -Force -ErrorAction SilentlyContinue
-
-# Update the solution version
-cd "$solutionExtractPath\Other"
-
-
-$buildVersion = Get-Date -Format "yyyyMM"
-$revisionVersion = Get-Date -Format "ddHHmm"
-
-pac solution version -bv $buildVersion
-pac solution version -rv $revisionVersion
-
-cd $PSScriptRoot
-
-if ($LastExitCode -ne 0 ){
-	throw "Error setting solution version."
-} 
-
+$solutionExtractPath = "$($PackageData.SolutionsPath)\$($solutionName)\"
 Process-Solution-Folder -solutionFilesPath $solutionExtractPath
 
 
