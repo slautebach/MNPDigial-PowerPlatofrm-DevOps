@@ -27,6 +27,7 @@ if ($solutionName -eq ""){
 #Constants
 $SolutionsPath = "$($PackageData.SolutionsPath)\..\Solutions"
 $solutionExtractPath = "$($PackageData.SolutionsPath)\$solutionName\"
+$managedSolutionExtractPath = "$($PackageData.SolutionsPath)\$($solutionName)_managed\"
 $mapFile  = "$($PackageData.SolutionsPath)\mapping.xml"
 $unManagedSolutionZipFile = "$($PackageData.SolutionsPath)\$($solutionName)_unmanaged.zip"
 $managedSolutionZipFile = "$($PackageData.SolutionsPath)\$($solutionName)_managed.zip"
@@ -56,9 +57,9 @@ Copy-Item -Path $unManagedSolutionZipFile -Destination $buildPackagePath
 ##############
 $LastExitCode = 0
 # Extract the solution
-pac solution pack --zipfile $managedSolutionZipFile --folder $solutionExtractPath --packagetype Managed --allowDelete --allowWrite --clobber --map $mapFile
+pac solution pack --zipfile $managedSolutionZipFile --folder $managedSolutionExtractPath --packagetype Managed --allowDelete --allowWrite --clobber --map $mapFile
 if ($LastExitCode -ne 0 ){
-	throw "Error packaging solution folder: $solutionExtractPath to solutionFile: $managedSolutionZipFile"
+	throw "Error packaging solution folder: $managedSolutionExtractPath to solutionFile: $managedSolutionZipFile"
 } 
 
 Write-Host "Copying $managedSolutionZipFile to $buildPackagePath"
