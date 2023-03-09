@@ -338,7 +338,7 @@ function SetPACConnections(){
 
 function ImportSolution(){
 	param(
-		[string]$solutionZipFile
+		[string]$solutionZipFile,
 		[switch] $unmanaged
 	)
 

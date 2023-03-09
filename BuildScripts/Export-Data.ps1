@@ -49,12 +49,13 @@ Write-Host "Connecting to Dataverse API"
 Write-Host "=================================================================="
 ConnectDataverseApi  -targetEnvironment $targetEnvironment -appId $appId -clientSecret $clientSecret
 
-
+# If you have any entities that you do not want
+$excludeEntitiesFromUpdate = @()
 Write-Host ""
 Write-Host "*******************************************************************"
 Write-Host "Updateing Schema File $schemaFileName"
 Write-Host "*******************************************************************"
-. "$PSScriptRoot\..\ConfigurationData\UpdateConfigurationXml.ps1"  -targetEnvironment $targetEnvironment -appId $appId -clientSecret $clientSecret -schemaFileName $schemaFileName -excludeEntities @("rp_fileattachmentconfig")
+. "$PSScriptRoot\..\ConfigurationData\UpdateConfigurationXml.ps1"  -targetEnvironment $targetEnvironment -appId $appId -clientSecret $clientSecret -schemaFileName $schemaFileName -excludeEntities $excludeEntitiesFromUpdate
 Write-Host "*******************************************************************"
 Write-Host "*******************************************************************"
 Write-Host "*******************************************************************"

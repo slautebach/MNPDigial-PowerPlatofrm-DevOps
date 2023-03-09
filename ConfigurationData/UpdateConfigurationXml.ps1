@@ -7,11 +7,16 @@
     [array] $excludeEntities
 ) 
 
+Import-Module "$PSScriptRoot\..\BuildScripts\PS-Modules\Build-Package.psm1" -Force  -DisableNameChecking
 Import-Module "$PSScriptRoot\..\BuildScripts\PS-Modules\Dataverse-API.psm1" -Force  -DisableNameChecking
 
 # Log Script Invcation Details
 LogInvocationDetails $MyInvocation
 
+Load-PackageData
+
+# load the list of configurable column prefixes
+$customAttributePrefixes = $PackageData.CrmDataPackageConfig.DataConfigUpdateCustomColumnPrefix
 
 #load the schema file
 $schemaData = [xml](Get-Content -Path $schemaFileName)
@@ -92,9 +97,11 @@ $nodes | ForEach-Object {
     }
 
 
+
+
     # TODO update to use a configurable list of prefix schemas
     # re-filter process amd, for only rp_ and new_ fields
-    $processedAmd =  $processedAmd | Where-Object {$_ -ne $null -and  ($_.LogicalName.StartsWith("rp_") -or $_.LogicalName.StartsWith("new_")) -and $_.AttributeOf -eq $null -and $_.CalculationOf -eq $null}
+    $processedAmd =  $processedAmd | Where-Object {$_ -ne $null -and  ($customAttributePrefixes.Contains($_.LogicalName.Split("_")[0])) -and $_.AttributeOf -eq $null -and $_.CalculationOf -eq $null}
     if ($processedAmd.Count -eq 0){
         # No new Attributes we are done, move on to the next entity
         return
