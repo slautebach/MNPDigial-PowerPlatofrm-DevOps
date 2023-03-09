@@ -6,6 +6,7 @@
 
 # Load the Package Data
 Import-Module "$PSScriptRoot\PS-Modules\Build-Package.psm1" -Force  -DisableNameChecking
+Import-Module "$PSScriptRoot\PS-Modules\PP-CLI.psm1" -Force  -DisableNameChecking
 
 # Log Script Invcation Details
 LogInvocationDetails $MyInvocation
@@ -48,6 +49,6 @@ New-Item -ItemType Directory -Force -Path $buildDeployScriptsPath | Out-Null
 # Copy all the Deploy Scripts
 Copy-Item -Path "$PSScriptRoot\DeployScripts\*" -Destination $buildDeployScriptsPath -Recurse | Out-Null
 
-. "$PSScriptRoot\DevOps-Install-PAC.ps1"
+InstallPAC
 
 

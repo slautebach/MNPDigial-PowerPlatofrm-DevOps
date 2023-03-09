@@ -26,7 +26,7 @@ parameters:
   type: string # data type of the parameter; required
   default: 
 
-name: $(Solution)-$(Date:yyyyMMdd)-$(Rev:.rrr)
+name: CI-Build-$(Date:yyyyMMdd)-$(Rev:.rrr)
 
 
 steps:

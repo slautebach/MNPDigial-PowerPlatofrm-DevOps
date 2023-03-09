@@ -28,19 +28,38 @@ if ($solutionName -eq ""){
 $SolutionsPath = "$($PackageData.SolutionsPath)\..\Solutions"
 $solutionExtractPath = "$($PackageData.SolutionsPath)\$solutionName\"
 $mapFile  = "$($PackageData.SolutionsPath)\mapping.xml"
-$solutionZipFile = "$($PackageData.SolutionsPath)\$solutionName.zip"
+$unManagedSolutionZipFile = "$($PackageData.SolutionsPath)\$($solutionName)_unmanaged.zip"
+$managedSolutionZipFile = "$($PackageData.SolutionsPath)\$($solutionName)_managed.zip"
 
 Write-Host "Packaging Solution: $solutionName"
 Write-Host "Packaging Solution from: $solutionExtractPath"
 
-Remove-Item $solutionZipFile -ErrorAction SilentlyContinue
+Remove-Item $unManagedSolutionZipFile -ErrorAction SilentlyContinue
+Remove-Item $managedSolutionZipFile -ErrorAction SilentlyContinue
 
+##############
+# UnManged
+##############
 $LastExitCode = 0
 # Extract the solution
-pac solution pack --zipfile $solutionZipFile --folder $solutionExtractPath --packagetype Unmanaged --allowDelete --allowWrite --clobber --map $mapFile
+pac solution pack --zipfile $unManagedSolutionZipFile --folder $solutionExtractPath --packagetype Unmanaged --allowDelete --allowWrite --clobber --map $mapFile
 if ($LastExitCode -ne 0 ){
-	throw "Error packaging solution folder: $solutionExtractPath to solutionFile: $solutionZipFile"
+	throw "Error packaging solution folder: $solutionExtractPath to solutionFile: $unManagedSolutionZipFile"
 } 
 
-Write-Host "Copying $PSScriptRoot\..\Solutions\$solutionName.zip to $buildPackagePath"
-Copy-Item -Path "$PSScriptRoot\..\Solutions\$solutionName.zip" -Destination $buildPackagePath 
+Write-Host "Copying $unManagedSolutionZipFile to $buildPackagePath"
+Copy-Item -Path $unManagedSolutionZipFile -Destination $buildPackagePath 
+
+
+##############
+# Manged
+##############
+$LastExitCode = 0
+# Extract the solution
+pac solution pack --zipfile $managedSolutionZipFile --folder $solutionExtractPath --packagetype Managed --allowDelete --allowWrite --clobber --map $mapFile
+if ($LastExitCode -ne 0 ){
+	throw "Error packaging solution folder: $solutionExtractPath to solutionFile: $managedSolutionZipFile"
+} 
+
+Write-Host "Copying $managedSolutionZipFile to $buildPackagePath"
+Copy-Item -Path $managedSolutionZipFile -Destination $buildPackagePath 

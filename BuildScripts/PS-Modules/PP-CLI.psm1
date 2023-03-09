@@ -339,10 +339,13 @@ function SetPACConnections(){
 function ImportSolution(){
 	param(
 		[string]$solutionZipFile
+		[switch] $unmanaged
 	)
 
 	$stopwatch =  [system.diagnostics.stopwatch]::StartNew()
 	$LastExitCode = 0
+
+	# TODO - for managed solutions deploy the solution as holding first then apply the upgrade
 	Write-Host pac solution import --path $solutionZipFile --activate-plugins --force-overwrite --async 
 	pac solution import --path $solutionZipFile --activate-plugins --force-overwrite --async > output.log
 	$stopwatch.Stop()
