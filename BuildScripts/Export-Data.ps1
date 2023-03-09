@@ -22,7 +22,7 @@ LogInvocationDetails $MyInvocation
 SetPACConnections  -targetEnvironment $targetEnvironment -appId $appId -clientSecret $clientSecret
 
 
-if (!$Force -and !$PackageData.Data){
+if (!$Force -and !$PackageData.BuildPackages.Data){
 	Write-Host "Data Export is not enabled in package.yml"
 	exit
 }
