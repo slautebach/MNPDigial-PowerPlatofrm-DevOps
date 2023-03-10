@@ -1,3 +1,11 @@
+# Build Package, what packages to enable/disable to build and release
+# For every release reset these to only the packages you need to release
+BuildPackages:
+  Solution: true
+  Portal: false
+  Data: false
+  Plugins: false
+
 # Major Version, increment with every major release
 MajorVersion: 1 
 
@@ -22,11 +30,3 @@ CrmDataPackageConfig:
     #<entity logical name>: true/false
     # example
     # account: true # will enable the disable account plugins on import of data.
-
-# Build Package, what packages to enable/disable to build and release
-# For every release reset these to only the packages you need to release
-BuildPackages:
-  Solution: true
-  Portal: false
-  Data: false
-  Plugins: false
