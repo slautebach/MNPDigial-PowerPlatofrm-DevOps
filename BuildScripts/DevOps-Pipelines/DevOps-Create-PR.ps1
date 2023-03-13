@@ -11,6 +11,7 @@ param(
 	[string] $RepositoryId = $ENV:BUILD_REPOSITORY_ID,
 	# Update this with your Azure DevOps Project
 	[string] $devOpsProjectUrl = "https://dev.azure.com/<organization>/<project>/",
+	[string] $buildPackageFile = "Package", # The Build Package file to use
 	[switch] $skipChecks
 ) 
 

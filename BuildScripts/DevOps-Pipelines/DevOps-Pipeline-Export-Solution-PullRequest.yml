@@ -11,6 +11,10 @@ pool:
 
 name: Solution-Pull-Request-$(Date:yyyyMMdd)-$(Rev:.rrr)
 
+variables:
+- name: BuildPackageFile
+  value: Package 
+
 steps:
 # Enable long paths before doing git checkout
 - powershell: |
@@ -20,10 +24,10 @@ steps:
 # Check out the source
 - checkout: self
 
-- script: echo '$(Build.SourcesDirectory)\BuildScripts\DevOps-Create-PR.ps1 -packages solution -targetEnvironment $(TargetEnvironment) -appId $(AppId) -clientSecret $(ClientSecret)'
+- script: echo '$(Build.SourcesDirectory)\BuildScripts\DevOps-Create-PR.ps1 -packages solution -targetEnvironment $(TargetEnvironment) -appId $(AppId) -clientSecret ***************'
 
 # Run the Create Pull Request Script
-- powershell: '$(Build.SourcesDirectory)\BuildScripts\DevOps-Create-PR.ps1 -packages solution -targetEnvironment $(TargetEnvironment) -appId $(AppId) -clientSecret $(ClientSecret)'
+- powershell: '$(Build.SourcesDirectory)\BuildScripts\DevOps-Create-PR.ps1 -packages solution -targetEnvironment $(TargetEnvironment) -appId $(AppId) -clientSecret $(ClientSecret)  -buildPackageFile $(BuildPackageFile)'
   env:
     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
   displayName: 'Dev Ops Create Solution/Data/Portals Pull Request.'

@@ -4,6 +4,10 @@
 # https://aka.ms/yaml
 
 
+variables:
+- name: BuildPackageFile
+  value: Package 
+
 steps:
 - powershell: |
     Write-Host ""
@@ -20,7 +24,7 @@ steps:
   displayName: 'Build Prep'
   inputs:
     targetType: 'filePath' # Optional. Options: filePath, inline
-    filePath: '$(Build.SourcesDirectory)\BuildScripts\Build-Prep.ps1'  # Prep the build
+    filePath: '$(Build.SourcesDirectory)\BuildScripts\Build-Prep.ps1 -buildPackageFile $(BuildPackageFile)'  # Prep the build
 
 - task: PowerShell@2
   displayName: 'Build Plugins'
