@@ -24,7 +24,7 @@ function Load-PackageData(){
     if (!$env:BuildPackageFile)
     {
         # if the environment doesn't specify a build package file
-        # then default it to the package.json
+        # then default it to the package.yml
         $env:BuildPackageFile = "Package"
     }
     
@@ -38,16 +38,16 @@ function Load-PackageData(){
 
     Write-Host "Read the package data and replace any environment vars with their environment values"
 	# update the the $($env:BuildPackageFile).json with the environment variable values
-	ReplaceEnvVariables -inFile "$PSScriptRoot\..\$($env:BuildPackageFile).yml" -outFile "$PSScriptRoot\..\$($env:BuildPackageFile).build.yml"
+	ReplaceEnvVariables -inFile "$PSScriptRoot\..\..\$($env:BuildPackageFile).yml" -outFile "$PSScriptRoot\..\..\$($env:BuildPackageFile).build.yml"
 
 
     Write-Host ""
     Write-Host "================================"
     Write-Host "Build Package Config File"
     Write-Host "================================"
-	cat "$PSScriptRoot\..\$($env:BuildPackageFile).build.yml"
+	cat "$PSScriptRoot\..\..\$($env:BuildPackageFile).build.yml"
         
-    $PackageData = (Get-Content -Path "$PSScriptRoot\..\$($env:BuildPackageFile).build.yml" )  -join "`n" | ConvertFrom-Yaml 
+    $PackageData = (Get-Content -Path "$PSScriptRoot\..\..\$($env:BuildPackageFile).build.yml" )  -join "`n" | ConvertFrom-Yaml 
 
     # if no Crm Data Package Config is specified
     # initialzie the default empty hashtables.

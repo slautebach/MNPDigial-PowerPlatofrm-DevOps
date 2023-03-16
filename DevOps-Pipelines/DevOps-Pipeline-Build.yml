@@ -23,17 +23,11 @@ pr: none
 pool:
   vmImage: 'windows-2022'
 
-
-parameters:
-- name: Solution # name of the parameter; required
-  type: string # data type of the parameter; required
-  default: 
-
-name: CI-Build-$(Date:yyyyMMdd)-$(Rev:.rrr)
-
 variables:
 - name: BuildPackageFile
   value: Package 
+
+name: CI-Build-$(Date:yyyyMMdd)-$(Rev:.rrr)
 
 steps:
 # Check out the source

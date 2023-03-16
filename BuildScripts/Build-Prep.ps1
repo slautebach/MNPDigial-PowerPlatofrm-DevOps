@@ -4,6 +4,12 @@
 #
 ######
 
+param(
+	[string]$buildPackageFile = "Package" # The Build Package file to use
+)
+
+$env:BuildPackageFile = $buildPackageFile
+
 # Load the Package Data
 Import-Module "$PSScriptRoot\PS-Modules\Build-Package.psm1" -Force  -DisableNameChecking
 Import-Module "$PSScriptRoot\PS-Modules\PP-CLI.psm1" -Force  -DisableNameChecking

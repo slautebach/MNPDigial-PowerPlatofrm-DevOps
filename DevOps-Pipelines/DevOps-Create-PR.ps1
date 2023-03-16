@@ -40,7 +40,7 @@ if (!$skipChecks){
 
 
 # Load build package info
-Import-Module "$PSScriptRoot\..\PS-Modules\Build-Package.psm1" -Force  -DisableNameChecking
+Import-Module "$PSScriptRoot\..\BuildScripts\PS-Modules\Build-Package.psm1" -Force  -DisableNameChecking
 
 # Log Script Invcation Details
 LogInvocationDetails $MyInvocation
@@ -64,7 +64,7 @@ $SolutionPRBranch = "$PRBranchPath/$solutionName"
 #***************************************************************************
 
 # move to the root directory of the project
-cd "$PSScriptRoot\..\..\"
+cd "$PSScriptRoot\..\"
 
 pwd
 
@@ -151,7 +151,7 @@ Write-Host "Update Build Number"
 # Get the list of packages enabled for build.
 $buildPackages = $PackageData.BuildPackages
 
-$BuildScriptsRoot = "$PSScriptRoot\..\"
+$BuildScriptsRoot = "$PSScriptRoot\..\BuildScripts\"
 
 # If Solution Build is on, build the solution
 if ($packages.Contains("solution")){
@@ -214,8 +214,8 @@ Write-Host "Adding Files to Git"
 Write-Host "=============================================================="
 
 # move to the root directory of the project
-Write-Host "cd $PSScriptRoot\..\..\"
-cd "$PSScriptRoot\..\..\"
+Write-Host "cd $PSScriptRoot\..\"
+cd "$PSScriptRoot\..\"
 
 $LastExitCode = 0
 Write-Host ""

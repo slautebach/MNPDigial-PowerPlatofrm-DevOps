@@ -1,6 +1,6 @@
 
 # Load the Package Data
-Import-Module "$PSScriptRoot\..\BuildScripts\PS-Modules\Build-Package.psm1" -Force  -DisableNameChecking
+Import-Module "$PSScriptRoot\PS-Modules\Build-Package.psm1" -Force  -DisableNameChecking
 Load-PackageData
 
 # Set the version number
@@ -10,6 +10,8 @@ $buildVersion = $PackageData.BuildVersion
 $revisionVersion = $PackageData.RevisionVersion
 
 $buildVersionNumber = "$majorVersion.$minorVersion.$buildVersion.$revisionVersion"
+
+
 
 Write-Host "Build Version Number: $buildVersionNumber"
 

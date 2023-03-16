@@ -2,7 +2,8 @@
 	[Parameter(Mandatory=$true)]
     [string]$targetEnvironment, # Cloud Environment name (*.crm3.dynamics.com)
 	[string]$appId = "", # optional app id to connect to dataverse
-	[string]$clientSecret = "" #  client secret for the app id
+	[string]$clientSecret = "", #  client secret for the app id
+	[switch]$unmanaged # specifies to deploy the unmanaged solution
 ) 
 
 Import-Module "$PSScriptRoot\..\..\PS-Modules\Extract-Solution-Components.psm1" -Force  -DisableNameChecking
@@ -21,9 +22,13 @@ ConnectDataverseApi  -targetEnvironment $targetEnvironment -appId $appId -client
 
 $solutionName = $PackageData.SolutionName
 
-
-#Constants
-$solutionZipFile = "$($PackageData.BuildPackagePath)\$solutionName.zip"
+if ($unmanaged){
+	#Constants
+	$solutionZipFile = "$($PackageData.BuildPackagePath)\$($solutionName)_unmanaged.zip"
+} else {
+	#Constants
+	$solutionZipFile = "$($PackageData.BuildPackagePath)\$($solutionName)_managed.zip"
+}
 
 Write-Host "Deploying Solution Zip to: $solutionZipFile"
-ImportSolution -solutionZipFile $solutionZipFile
+ImportSolution -solutionZipFile $solutionZipFile -unmanaged:$unmanaged
