@@ -24,6 +24,10 @@ PortalId: <specify portal guid here>
 # The global shared view name to export data from (different from the releases.)
 GlobalSharedFilterView: Global-Data 
 
+PluginSolution: <Specify your plugin solution file here>.sln
+
+UsingNorth52: false
+
 # Data Migration Package Config
 CrmDataPackageConfig:
   DisablePlugins:  # List of plugins to enable/disable as part of the migration import
