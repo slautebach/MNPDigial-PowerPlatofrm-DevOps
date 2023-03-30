@@ -39,6 +39,9 @@ if ($globalViewName -eq ""){
 
 
 $ConfigDataExtractPath = "$PSScriptRoot\..\ConfigurationData\SolutionBuilds\$solutionName\"
+
+New-Item -ItemType Directory -Force -Path "$PSScriptRoot\..\ConfigurationData\SolutionBuilds\" -ErrorAction SilentlyContinue | Out-Null
+
 $zipDataFile = "$PSScriptRoot\..\ConfigurationData\SolutionBuilds\$solutionName-Data.zip"
 
 
@@ -255,7 +258,7 @@ Write-Host "Going to Extract data for the following Fetch Queries:"
      $fetchResult = get-crmrecordsbyfetch  -conn $Conn -Fetch $_ -TopCount 1
      $fetchResult.CrmRecords| ForEach-Object {
          $entityName = $_.LogicalName
-         if ($PackageData.CrmDataPackageConfig.DisablePlugins.ContainsKey($entityName)) {
+         if ($PackageData.CrmDataPackageConfig.DisablePlugins -and $PackageData.CrmDataPackageConfig.DisablePlugins.ContainsKey($entityName)) {
              # if the variables.json specify a value, then we will use that value
              $DisablePlugins[$entityName] = $PackageData.CrmDataPackageConfig.DisablePlugins[$entityName]
          } 
@@ -305,15 +308,15 @@ try{
         Get-CrmDataPackage -Conn $Conn -Fetches $allFetches -DisablePlugins $PackageData.CrmDataPackageConfig.DisablePlugins | Export-CrmDataPackage -ZipPath $zipDataFile
     }
     else {
-        Write-Host "Extract with without identifers and no plugins disabled"
+        Write-Host "Extract without identifers and no plugins disabled"
         Get-CrmDataPackage -Conn $Conn -Fetches $allFetches | Export-CrmDataPackage -ZipPath $zipDataFile
     }
 }
 catch {
-    Write-Error "Get-CrmDataPackage threw an exception"
-    Write-Error "This could be due to a bug, where if the list of Identifiers or Disabled plugins list an entity"
-    Write-Error "that does not end up in the data package an error occurs."   
-    Write-Error "Please validate the Identifiers and Disabled Plugins list." 
+    Write-Host "Get-CrmDataPackage threw an exception"
+    Write-Host "This could be due to a bug, where if the list of Identifiers or Disabled plugins list an entity"
+    Write-Host "that does not end up in the data package an error occurs."   
+    Write-Host "Please validate the Identifiers and Disabled Plugins list." 
     throw $_
 }
 

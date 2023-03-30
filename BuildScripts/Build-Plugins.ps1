@@ -20,12 +20,10 @@ if (!$Force -and !$PackageData.BuildPackages.Plugins){
 $pluginSolutionsFolder = "$PSScriptRoot\..\Plugins\"
 
 # install nuget packages for all plugins
-Build-MsBuildNuGet -solution "$pluginSolutionsFolder\AllPlugins.sln"
-# install nuget packages for all plugins
-Build-MsBuildNuGet -solution "$pluginSolutionsFolder\xRM Plugins.sln"
+Build-MsBuildNuGet -solution "$pluginSolutionsFolder\$($PackageData.PluginSolution)"
 
 # Build just the xRM Plugins
-$buildResult = Build-MsBuild -solution "$pluginSolutionsFolder\xRM Plugins.sln"
+$buildResult = Build-MsBuild -solution "$pluginSolutionsFolder\$($PackageData.PluginSolution)"
 
 
 if ($buildResult.BuildSucceeded -eq $true)

@@ -8,6 +8,7 @@
 
 Import-Module "$PSScriptRoot\..\..\PS-Modules\Extract-Solution-Components.psm1" -Force  -DisableNameChecking
 Import-Module "$PSScriptRoot\..\..\PS-Modules\Build-Package.psm1" -Force -DisableNameChecking
+Import-Module "$PSScriptRoot\..\..\PS-Modules\Dataverse-API.psm1" -Force -DisableNameChecking
 
 # Log Script Invcation Details
 LogInvocationDetails $MyInvocation

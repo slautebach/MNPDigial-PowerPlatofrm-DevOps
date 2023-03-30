@@ -166,6 +166,12 @@ function ConnectDataverseApi(){
 
 
 function ConfigureNorth52(){
+
+    if (!$PackageData.UsingNorth52){
+        # not using North52, skip
+        return
+    }
+
     $Conn = $global:Conn
     ###############################
     # Configure N52
@@ -336,6 +342,12 @@ function WaitForNorth52(){
          [int]$timeout = 30,
          [int]$queryWait = 10000
     ) 
+
+    if (!$PackageData.UsingNorth52){
+        # not using North52, skip
+        return
+    }
+
     # Get the results of the N52 Publish Jobs
     $N52Job = GetNorth52PostDeploymentAsyncJob
     Write-Host "Looking for 'N52 Publish All' System Job, that started in the past hour ..."

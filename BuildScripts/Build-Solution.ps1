@@ -24,6 +24,76 @@ if ($solutionName -eq ""){
 	$solutionName = $PackageData.SolutionName
 }
 
+
+Write-Host ""
+Write-Host "***************************************************"
+Write-Host "Checking Web Resource Files for file extensions"
+Write-Host "***************************************************"
+$WebResourcePath = "$PSScriptRoot\..\WebResources"
+$files = Get-ChildItem -Path $WebResourcePath -Recurse -ErrorAction SilentlyContinue -Force
+
+# file that lists webresource files to ignore.  These are files without an extension (or legacy)
+$ignoreFiles = Get-Content -Path  "$PSScriptRoot\..\WebResources\.build-ignore-legacy"
+
+# list of files that we need to list and error on.
+$webResourceFileErrors = @()
+
+# iterate through each web resource file to check
+$files | ForEach-Object {
+	$file = $_
+	if ($file.Extension){
+		# file has an extension continue
+		return;
+	}
+	
+	if ($file -is [System.IO.DirectoryInfo]){
+		# file has an extension continue
+		return;
+	}
+
+	$fileFullName = $file.FullName.ToLower().Replace("\", "/")
+
+	$canIgnoreFile = $false
+	$ignoreFiles | ForEach-Object {
+		$ignoreLine = $_.Trim().ToLower().Replace("\", "/")		
+		# if it is a comment or empty line skip
+		if ($ignoreLine.StartsWith("#") -or $ignoreLine.Length -eq 0){
+			return;
+		}
+		if ($fileFullName.Contains($ignoreLine)){
+			$canIgnoreFile = $true
+			return
+		}
+	}
+	# we are to ignore the file skip
+	if ($canIgnoreFile){
+		Write-Host "Ignoring File $($file.FullName)  "
+		return;
+	}
+	$webResourceFileErrors += $file.FullName
+}
+
+if ($webResourceFileErrors.Length -gt 0){
+	Write-Host ""
+	Write-Host  -ForegroundColor Red "********************************************************************"
+	Write-Host  -ForegroundColor Red "Error with Web Resource File Extensions"
+	Write-Host  -ForegroundColor Red "********************************************************************"
+	Write-Host  -ForegroundColor Red "You have web resource files that are missing file extensions."
+	Write-Host  -ForegroundColor Red "Please update the webresource name (or re-create it) with a proper"
+	Write-Host  -ForegroundColor Red "name and file extension.  Otherwise it breaks the DevOps/Code review"
+	Write-Host  -ForegroundColor Red "capabilities."
+	Write-Host  -ForegroundColor Red "The following files are missing file extensions that need to be corrected:"
+	$webResourceFileErrors | ForEach-Object {
+		Write-Host  -ForegroundColor Red "    $_"
+	}
+	throw "Error validating web resource file extensions"
+}
+
+
+
+
+
+
 #Constants
 $SolutionsPath = "$($PackageData.SolutionsPath)\..\Solutions"
 $solutionExtractPath = "$($PackageData.SolutionsPath)\$solutionName\"
