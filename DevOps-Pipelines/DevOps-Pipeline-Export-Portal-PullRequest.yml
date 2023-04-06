@@ -24,10 +24,10 @@ steps:
 # Check out the source
 - checkout: self
 
-- script: echo '$(Build.SourcesDirectory)\BuildScripts\DevOps-Create-PR.ps1 -packages portal -targetEnvironment $(TargetEnvironment) -appId $(AppId) -clientSecret **********  -buildPackageFile $(BuildPackageFile)'
+- script: echo '$(Build.SourcesDirectory)\DevOps-Pipelines\DevOps-Create-PR.ps1 -packages portal -targetEnvironment $(TargetEnvironment) -appId $(AppId) -clientSecret **********  -buildPackageFile $(BuildPackageFile)'
 
 # Run the Create Pull Request Script
-- powershell: '$(Build.SourcesDirectory)\BuildScripts\DevOps-Create-PR.ps1 -packages portal -targetEnvironment $(TargetEnvironment) -appId $(AppId) -clientSecret $(ClientSecret)  -buildPackageFile $(BuildPackageFile)'
+- powershell: '$(Build.SourcesDirectory)\DevOps-Pipelines\DevOps-Create-PR.ps1 -packages portal -targetEnvironment $(TargetEnvironment) -appId $(AppId) -clientSecret $(ClientSecret)  -buildPackageFile $(BuildPackageFile)'
   env:
     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
   displayName: 'Dev Ops Create Solution/Data/Portals Pull Request.'
