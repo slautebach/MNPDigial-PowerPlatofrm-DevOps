@@ -14,6 +14,8 @@ MinorVersion: 0
 
 # the regional Datavers domain name (ie crm3.dynamics.com)
 DataverseDomain: crm3.dyanmics.com
+# The tenant id your or is under
+TenantId: <your tenant guid here>
 
 # The solution name to export
 SolutionName: <specify you solution name here> 
