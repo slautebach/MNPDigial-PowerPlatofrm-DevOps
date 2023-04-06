@@ -1,7 +1,7 @@
 param(
 	[Parameter(Mandatory=$true)]
 	[string] $targetEnvironment, # Cloud Environment name (*.crm3.dynamics.com)
-	[string] $targetBranch = "master",
+	[string] $targetBranch = "main",
 	[string] $appId = "", # optional app id to connect to dataverse
 	[string] $clientSecret = "", #  client secret for the app id
 	[String[]] $packages,
