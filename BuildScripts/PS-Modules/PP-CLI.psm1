@@ -314,7 +314,6 @@ function SetPACConnections(){
         [string] $targetEnvironment,
         [string] $appId, # optional app id to connect to dataverse
 	    [string] $clientSecret, #  client secret for the app id
-	    [string] $tenant,
         [switch] $logConfig,
         [switch] $requireAdmin,
         [switch] $resetAuth
@@ -328,7 +327,7 @@ function SetPACConnections(){
     $global:PACConnectionDetails.clientSecret = $clientSecret
     $global:PACConnectionDetails.tenant = $tenant
     $global:PACConnectionDetails.logConfig = $logConfig
-    $global:PACConnectionDetails.tenant = $tenant
+    $global:PACConnectionDetails.tenant = $PackageData.TenantId
     $global:PACConnectionDetails.resetAuth = $resetAuth
     $global:PACConnectionDetails.requireAdmin = $requireAdmin
     ReInitializePACConnection 
