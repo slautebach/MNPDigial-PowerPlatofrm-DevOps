@@ -10,7 +10,7 @@ param(
 	[string] $RequestedForEmail = $ENV:BUILD_REQUESTEDFOREMAIL,
 	[string] $RepositoryId = $ENV:BUILD_REPOSITORY_ID,
 	# Update this with your Azure DevOps Project
-	[string] $devOpsProjectUrl = "https://dev.azure.com/<organization>/<project>/",
+	[string] $devOpsProjectUrl = "",
 	[string] $buildPackageFile = "Package", # The Build Package file to use
 	[switch] $skipChecks
 ) 
@@ -57,7 +57,7 @@ $solutionName = $PackageData.SolutionName
 
 $SolutionPRBranch = "$PRBranchPath/$solutionName"
 
-
+$devOpsProjectUrl = "https://dev.azure.com/$($PackageData.DevOpsOrganization)/$($PackageData.DevOpProject)/"
 
 #***************************************************************************
 #*   Setup the Repository

@@ -17,6 +17,10 @@ DataverseDomain: crm3.dyanmics.com
 # The tenant id your or is under
 TenantId: <your tenant guid here>
 
+#DevOps Settings
+DevOpsOrganization: <your organization name>
+DevOpProject: <your project name>
+
 # The solution name to export
 SolutionName: <specify you solution name here> 
 
